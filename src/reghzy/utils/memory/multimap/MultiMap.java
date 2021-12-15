@@ -1,4 +1,4 @@
-package dragonjetz.utils.memory.multimap;
+package reghzy.utils.memory.multimap;
 
 import java.util.Collection;
 import java.util.Map;

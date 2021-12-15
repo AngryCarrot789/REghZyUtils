@@ -1,4 +1,4 @@
-package dragonjetz.utils.dependency;
+package reghzy.utils.dependency;
 
 /**
  * A dependency upon a mod (lmao this shouldn't even be possible with plugins but i made it work >:))

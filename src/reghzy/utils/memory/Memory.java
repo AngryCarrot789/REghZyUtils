@@ -1,6 +1,6 @@
-package dragonjetz.utils.memory;
+package reghzy.utils.memory;
 
-import dragonjetz.mfunclagfind.utils.IConverter;
+import reghzy.mfunclagfind.utils.IConverter;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;

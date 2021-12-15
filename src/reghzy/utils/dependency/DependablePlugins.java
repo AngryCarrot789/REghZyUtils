@@ -1,4 +1,4 @@
-package dragonjetz.utils.dependency;
+package reghzy.utils.dependency;
 
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;

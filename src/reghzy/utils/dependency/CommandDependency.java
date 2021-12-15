@@ -1,4 +1,4 @@
-package dragonjetz.utils.dependency;
+package reghzy.utils.dependency;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

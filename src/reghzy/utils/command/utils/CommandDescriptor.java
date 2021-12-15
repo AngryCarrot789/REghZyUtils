@@ -1,4 +1,4 @@
-package dragonjetz.utils.command.utils;
+package reghzy.utils.command.utils;
 
 import org.bukkit.ChatColor;
 

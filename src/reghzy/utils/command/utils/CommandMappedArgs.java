@@ -1,11 +1,11 @@
-package dragonjetz.utils.command.utils;
+package reghzy.utils.command.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
-import dragonjetz.mfunclagfind.utils.text.StringHelper;
-import dragonjetz.mfunclagfind.utils.types.ItemDataPair;
+import reghzy.mfunclagfind.utils.text.StringHelper;
+import reghzy.mfunclagfind.utils.types.ItemDataPair;
 
 import java.util.HashMap;
 

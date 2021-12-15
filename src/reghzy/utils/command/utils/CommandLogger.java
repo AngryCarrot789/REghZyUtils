@@ -1,10 +1,10 @@
-package dragonjetz.utils.command.utils;
+package reghzy.utils.command.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import dragonjetz.mfunclagfind.utils.MathsHelper;
-import dragonjetz.mfunclagfind.utils.text.Format;
+import reghzy.mfunclagfind.utils.MathsHelper;
+import reghzy.mfunclagfind.utils.text.Format;
 
 public final class CommandLogger {
     private final String prefix;

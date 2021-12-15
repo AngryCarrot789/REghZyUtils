@@ -1,18 +1,17 @@
-package dragonjetz.utils.memory;
+package reghzy.utils.memory;
 
 import java.util.Iterator;
 
 /**
  * A concurrent array (with a fixed size) supporting an add method, which will wrap back around to the start if the internal index reaches the end
- *
  * @param <E>
  */
-public class ConcurrentArray<E> {
-    public final int size;
+public class ConcurrentWrappingArray<E> {
     private final Object[] elements;
-    private volatile int index;
+    public final int size;
+    private int index;
 
-    public ConcurrentArray(int size) {
+    public ConcurrentWrappingArray(int size) {
         this.elements = new Object[size];
         this.size = size;
         this.index = 0;
@@ -20,46 +19,47 @@ public class ConcurrentArray<E> {
 
     public synchronized void add(E value) {
         if (this.index >= this.size) {
-            throw new UnsupportedOperationException("The array is full!");
+            this.index = 0;
         }
 
         this.elements[this.index++] = value;
     }
 
-    public synchronized void addAll(boolean capIfTooLong, E... values) {
+    public synchronized void addAll(boolean wrapIfTooLong, E... values) {
         if (values.length > this.size) {
             throw new IllegalStateException("Cannot add all elements because the source array is bigger than the internal array");
         }
         else if (values.length == this.size) {
-            if (this.index != 0) {
-                throw new UnsupportedOperationException("Cannot copy all elements because the index is not 0 but the source array is the size of the internal array");
-            }
-
             System.arraycopy(this.elements, 0, values, 0, values.length);
         }
         else {
             int lastIndex = this.index + values.length;
-            if (lastIndex < this.size) {
-                Object[] elements = this.elements;
-                for (int i = this.index, j = 0; i < lastIndex; i++) {
-                    elements[i] = values[j++];
-                }
-            }
-            else {
-                if (capIfTooLong) {
-                    Object[] elements = this.elements;
-                    for (int i = this.index, j = 0, len = this.size; i < len; i++) {
-                        elements[i] = values[j++];
-                    }
+            if (lastIndex >= this.size) {
+                if (wrapIfTooLong) {
+                    this.index = 0;
                 }
                 else {
-                    throw new UnsupportedOperationException("Cannot add all elements because it would exceed the size of this array");
+                    int j = 0;
+                    Object[] elements = this.elements;
+                    for (int i = this.index, len = this.size; i < len; i++) {
+                        elements[i] = values[j++];
+                    }
+                    for (int i = 0, end = values.length - j; i < end; i++) {
+                        elements[i] = values[j++];
+                    }
+
+                    return;
                 }
+            }
+
+            Object[] elements = this.elements;
+            for (int i = this.index, j = 0; i < lastIndex; i++) {
+                elements[i] = values[j++];
             }
         }
     }
 
-    public synchronized E get(int index) {
+    public E get(int index) {
         if (index < 0 || index > this.elements.length) {
             throw new IndexOutOfBoundsException("Cannot get an element because the index out of bounds! " + index + " < 0 || " + index + " > " + this.elements.length);
         }
@@ -67,11 +67,11 @@ public class ConcurrentArray<E> {
         return (E) elements[index];
     }
 
-    public synchronized E unsafeGet(int index) {
+    public E unsafeGet(int index) {
         return (E) elements[index];
     }
 
-    public synchronized void set(int index, E value) {
+    public void set(int index, E value) {
         if (index < 0 || index > this.elements.length) {
             throw new IndexOutOfBoundsException("Cannot set an element because the index out of bounds! " + index + " < 0 || " + index + " > " + this.elements.length);
         }
@@ -79,7 +79,7 @@ public class ConcurrentArray<E> {
         elements[index] = value;
     }
 
-    public synchronized void unsafeSet(int index, E value) {
+    public void unsafeSet(int index, E value) {
         elements[index] = value;
     }
 
@@ -100,10 +100,6 @@ public class ConcurrentArray<E> {
 
     public void reset() {
         this.index = 0;
-    }
-
-    public boolean isFull() {
-        return this.index >= this.size;
     }
 
     public synchronized void clear() {
